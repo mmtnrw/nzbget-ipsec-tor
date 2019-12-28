@@ -8,7 +8,7 @@ ARG NZBGET_BRANCH="stable-download"
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo && \
+apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo php-curl php-json&& \
 echo "**** Installing NZBGet ****" && \
 mkdir -p /app/nzbget && \
 curl -o /tmp/json -L http://nzbget.net/info/nzbget-version-linux.json && NZBGET_VERSION=$(grep "${NZBGET_BRANCH}" /tmp/json  | cut -d '"' -f 4) && \
