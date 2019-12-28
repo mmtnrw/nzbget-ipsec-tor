@@ -55,4 +55,4 @@ echo "[info] Starting Serienfilter on Port 9191....."
 
 # start nzbget non-daemonised and specify config file (close stdout due to chatter)
 echo "[info] Starting NZBGET Daemon....."
-/usr/bin/nzbget -c /config/nzbget.conf -s 1>&-
+/usr/local/bin/nzbget/nzbget -c /config/nzbget.conf -s 1>&-
