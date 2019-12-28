@@ -15,7 +15,6 @@ curl -o /tmp/json -L http://nzbget.net/info/nzbget-version-linux.json && NZBGET_
 curl -o /tmp/nzbget.run -L "${NZBGET_VERSION}" && \
 sh /tmp/nzbget.run --destdir /app/nzbget && \
 echo "**** Configuring NZBGet ****" && \
-cp /app/nzbget/nzbget.conf /defaults/nzbget.conf && \
 sed -i \
 -e "s#\(MainDir=\).*#\1/data#g" \
 -e "s#\(ScriptDir=\).*#\1$\{MainDir\}/scripts#g" \
