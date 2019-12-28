@@ -50,8 +50,11 @@ fi
 echo "[info] Starting Cronie....."
 /usr/sbin/crond &
 
+# If a directory exists called web it will be used for PHP Webserver
+if [[ -d "/scripts/web" ]]; then 
 echo "[info] Starting Serienfilter on Port 9191....."
 /usr/bin/php -S 0.0.0.0:9191 -t /scripts/web & 
+fi
 
 # start nzbget non-daemonised and specify config file (close stdout due to chatter)
 echo "[info] Starting NZBGET Daemon....."
