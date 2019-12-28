@@ -1,0 +1,32 @@
+version: '2.2'
+
+services:
+  nzbget-strongswan-tor:
+    image: "mmtnrw/nzbget-ipsec-tor-php:latest"
+    restart: always
+    cap_add:
+     - NET_ADMIN
+    ports:
+     - "6789:6789"
+     - "9191:9191"
+     - "9050:9050"
+    privileged: true
+    tty: true
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/share/nzbget/data:/data"
+      - "/share/nzbget/config:/config"
+      - "/share/Skripte/usenet:/scripts"
+      - "/share/Media:/media"
+    environment:
+      VPN_ENABLED: "yes"
+      VPN_USER: "myusername"
+      VPN_PASS: "mypassword"
+      VPN_SERVER: "myserver"
+      TOR_ENABLED: "yes"
+#      NAME_SERVERS: "1.1.1.1"
+      UMASK: "000"
+      PUID: "0"
+      PGID: "0"
+      TZ: "Europe/Amsterdam"
