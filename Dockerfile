@@ -51,6 +51,9 @@ echo '1 * * * * /scripts/cron.sh &> /dev/null' >> /var/spool/cron/crontabs/root
 # Copying local files
 COPY root/ /root/
 
+RUN \
+chmod +x /root/start.sh
+
 # ports and volumes
 VOLUME /config /data /media /scripts
 EXPOSE 6789 9050 9191
