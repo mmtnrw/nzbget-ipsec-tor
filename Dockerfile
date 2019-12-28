@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:latest
 
 # set version label
 ARG BUILD_DATE
@@ -27,8 +27,8 @@ echo "**** Cleaning up ****" && \
 rm -rf /tmp/*
 
 RUN \
-echo "**** Enabling SQLite in PHP ****" && \
-sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php7/php.ini
+echo "**** Enabling SQLite in PHP ****"
+#sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php7/php.ini
   
 RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
