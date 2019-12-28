@@ -56,10 +56,10 @@ mv /tmp/nzbget-ipsec-tor-master/start.sh /root && \
 rm -rf /tmp/*
 
 # Copying local files
-COPY root/ /
+COPY root/ /root/
 
 # ports and volumes
 VOLUME /config /data /media /scripts
 EXPOSE 6789 9050 9191
 
-CMD ["/bin/start.sh"]
+CMD ["/root/start.sh"]
