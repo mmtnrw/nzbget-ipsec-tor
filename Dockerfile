@@ -4,10 +4,10 @@ FROM archlinux/base:latest
 RUN pacman -Sy
 
 #Install needed Programs
-RUN pacman -S --needed libxml2 p7zip python par2cmdline php cronie nano php-sqlite tor strongswan nzbget unrar procps-ng wget curl unzip --noconfirm
+RUN pacman -S --needed libxml2 p7zip python par2cmdline php cronie nano php-sqlite tor strongswan nzbget unrar procps-ng wget unzip --noconfirm
 
 #Cleanup Pacman
-RUN pacman -Scc -noconfirm
+RUN pacman -Scc --noconfirm
 
 #Enable php.ini SQLITE
 RUN sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php/php.ini
