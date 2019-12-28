@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 # check if nzbget.conf exists, if not copy default config
 if [[ -f /config/nzbget.conf ]]; then
