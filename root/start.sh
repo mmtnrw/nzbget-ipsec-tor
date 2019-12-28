@@ -44,11 +44,11 @@ fi
 
 if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
-/usr/bin/tor -f /etc/tor/torrc &
+sudo -u tor /usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
-/usr/bin/crond &
+/usr/sbin/crond &
 
 echo "[info] Starting Serienfilter on Port 9191....."
 /usr/bin/php -S 0.0.0.0:9191 -t /scripts/web & 
