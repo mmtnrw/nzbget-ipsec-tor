@@ -36,7 +36,7 @@ echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc
 
 RUN \
 echo "**** Setting Strongswan ****" && \
-printf '%s\n\t' 'conn ipsec_vpn' 'keyexchange=ikev2' 'dpdaction=restart' 'dpddelay=300s' 'eap_identity=USERNAME' 'leftauth=eap-mschapv2' 'left=%defaultroute' 'leftsourceip=%config' 'right=vpn_remote_server' 'rightauth=pubkey' 'rightsubnet=0.0.0.0/0' 'rightid=%any' 'type=tunnel' '#newshosting' 'closeaction=restart' 'keyingtries=%forever' 'auto=start' >  /etc/ipsec.conf && \
+printf '%s\n\t' 'conn ipsec_vpn' 'keyexchange=ike' 'dpdaction=restart' 'dpddelay=300s' 'eap_identity=USERNAME' 'leftauth=eap-mschapv2' 'left=%defaultroute' 'leftsourceip=%config' 'right=vpn_remote_server' 'rightauth=pubkey' 'rightsubnet=0.0.0.0/0' 'rightid=%any' 'type=tunnel' '#newshosting' 'closeaction=restart' 'keyingtries=%forever' 'auto=start' >  /etc/ipsec.conf && \
 sed -i 's/load = yes/load = no/g' /etc/strongswan.d/charon/constraints.conf && \
 printf '%s' 'username' ' : EAP ' 'password' >> /etc/ipsec.secrets && \
 rmdir /etc/ipsec.d/cacerts && \
