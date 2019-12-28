@@ -48,13 +48,6 @@ RUN \
 echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
 echo '1 * * * * /scripts/cron.sh &> /dev/null' >> /var/spool/cron/crontabs/root
 
-RUN \
-echo "**** Installing Startup Script ****" && \
-curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-time 60 -o /tmp/scripts-master.zip -L https://github.com/mmtnrw/nzbget-ipsec-tor/archive/master.zip && \
-unzip /tmp/scripts-master.zip -d /tmp && \
-mv /tmp/nzbget-ipsec-tor-master/start.sh /root && \
-rm -rf /tmp/*
-
 # Copying local files
 COPY root/ /root/
 
