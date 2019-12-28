@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:edge
 
 # set version label
 ARG BUILD_DATE
