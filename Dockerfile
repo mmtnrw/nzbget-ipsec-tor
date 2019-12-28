@@ -32,11 +32,7 @@ sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/ext
   
 RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
-#echo 'User tor' >> /etc/tor/torrc && \
-echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc && \
-#deluser tor && \
-#addgroup tor && \
-#adduser -h /var/lib/tor -s /sbin/nologin -G tor -u 100 -D tor
+echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc
 
 RUN \
 echo "**** Setting Strongswan ****" && \
