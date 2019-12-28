@@ -56,4 +56,4 @@ EXPOSE 9191
 #expose port for tor socksproxy
 EXPOSE 9050
 
-CMD ["/root/startup.sh" "CONSOLE"]
+CMD ["/root/start.sh" "CONSOLE"]
