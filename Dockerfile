@@ -28,7 +28,7 @@ rm -rf /tmp/*
 
 RUN \
 echo "**** Enabling SQLite in PHP ****" && \
-sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php/php.ini
+sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php7/php.ini
   
 RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
