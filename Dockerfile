@@ -8,7 +8,7 @@ ARG NZBGET_BRANCH="stable-download"
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan && \
+apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo && \
 echo "**** Installing NZBGet ****" && \
 mkdir -p /app/nzbget && \
 curl -o /tmp/json -L http://nzbget.net/info/nzbget-version-linux.json && NZBGET_VERSION=$(grep "${NZBGET_BRANCH}" /tmp/json  | cut -d '"' -f 4) && \
@@ -33,7 +33,10 @@ sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/ext
 RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
 echo 'User tor' >> /etc/tor/torrc && \
-echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc
+echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc && \
+deluser tor && \
+addgroup tor && \
+adduser -h /var/lib/tor -s /sbin/nologin -G tor -u 100 -D tor
 
 RUN \
 echo "**** Setting Strongswan ****" && \
