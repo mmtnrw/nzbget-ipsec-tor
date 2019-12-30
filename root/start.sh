@@ -31,12 +31,13 @@ ipsec start
 fi
 
 
+echo 'domain lan.mmt.nrw' > /etc/resolv.conf
 if [[ ! -z "$NAMESERVER" ]]; then
 echo "[info] Setting Nameserver to ${NAMESERVER}....."
-echo "nameserver ${NAMESERVER}" > /etc/resolv.conf
+echo "nameserver ${NAMESERVER}" >> /etc/resolv.conf
 else
 echo "[info] Setting Nameserver to Cloudflare and Google....."
-echo 'nameserver 1.1.1.1' > /etc/resolv.conf
+echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
 echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
 fi
 #Bugfix for Alpine DNS
