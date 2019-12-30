@@ -39,6 +39,8 @@ echo "[info] Setting Nameserver to Cloudflare and Google....."
 echo 'nameserver 1.1.1.1' > /etc/resolv.conf
 echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
 fi
+#Bugfix for Alpine DNS
+echo 'options ndots:5' >> /etc/resolv.conf
 
 
 
