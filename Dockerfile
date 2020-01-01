@@ -4,7 +4,7 @@ FROM alpine:latest
 ARG BUILD_DATE
 ARG VERSION
 
-ARG NZBGET_BRANCH="stable-download"
+ARG NZBGET_BRANCH="testing-download"
 
 RUN \
 echo "**** Installing Packages ****" && \
