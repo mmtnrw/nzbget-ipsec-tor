@@ -67,7 +67,7 @@ ntpd -d -q -n -p time.cloudflare.com &> /dev/null
 
 if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
-s6-setuidgid -u tor -g tor /usr/bin/tor -f /etc/tor/torrc &
+s6-setuidgid tor /usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
