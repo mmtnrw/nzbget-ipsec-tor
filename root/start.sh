@@ -20,7 +20,18 @@ fi
 echo "[info] Setting up User ID: ${PUID}"
 echo "[info] Setting up Group ID: ${PGID}"
 echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
-RUN=s6-applyuidgid -u ${PUID} -g ${PGID}
+
+if [ ! -z $(getent passwd ${PGID}) ]
+then
+addgroup --gid "$GID" "mmtnrw"
+fi
+
+if [ ! -z $(getent passwd ${PUID}) ]
+then
+adduser --gecos "" --gid "$GID" -r --uid "$PUID" "mmtnrw"
+fi
+
+RUN=s6-setuidgid -u ${PUID} -g ${PGID}
 UMASK_SET=${UMASK_SET:-022}
 umask "$UMASK_SET"
 chown ${PUID}:${GUID} /config/nzbget.conf
@@ -58,12 +69,12 @@ ntpd -d -q -n -p time.cloudflare.com &> /dev/null
 
 if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
-sudo -u tor /usr/bin/tor -f /etc/tor/torrc &
+s6-setuidgid -u tor -g tor /usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
 echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
-echo '1 * * * * /scripts/cron.sh &> /dev/null' >> /var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`
+echo '1 * * * * /scripts/cron.sh &> /dev/null' >> "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
 
 /usr/sbin/crond &
 
