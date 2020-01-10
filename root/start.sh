@@ -17,6 +17,19 @@ else
 
 fi
 
+echo "[info] Setting up User ID: ${PUID}"
+echo "[info] Setting up Group ID: ${PGID}"
+echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
+RUN=s6-applyuidgid -u ${PUID} -g ${PGID}
+UMASK_SET=${UMASK_SET:-022}
+umask "$UMASK_SET"
+chown ${PUID}:${GUID} /config/nzbget.conf
+
+echo "[info] Setting up Timezone : $TZ"
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+echo $TZ > /etc/timezone
+ntpd -d -q -n -p time.cloudflare.com
+
 if [[ "${VPN_ENABLED}" == "yes" ]]; then
 echo "[info] Starting IPSec....."
 echo "[info] IPSec Username=$VPN_USER"
@@ -40,20 +53,26 @@ echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
 echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
 fi
 
+echo "[info] Syncing Time...."
+ntpd -d -q -n -p time.cloudflare.com &> /dev/null
+
 if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
 sudo -u tor /usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
+echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
+echo '1 * * * * /scripts/cron.sh &> /dev/null' >> /var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`
+
 /usr/sbin/crond &
 
 # If a directory exists called web it will be used for PHP Webserver
 if [[ -d "/scripts/web" ]]; then 
 echo "[info] Starting Serienfilter on Port 9191....."
-/usr/bin/php -S 0.0.0.0:9191 -t /scripts/web & 
+$RUN /usr/bin/php -S 0.0.0.0:9191 -t /scripts/web & 
 fi
 
 # start nzbget non-daemonised and specify config file (close stdout due to chatter)
 echo "[info] Starting NZBGET Daemon....."
-/app/nzbget/nzbget -c /config/nzbget.conf -s 1>&-
+$RUN /app/nzbget/nzbget -c /config/nzbget.conf -s 1>&-
