@@ -72,7 +72,7 @@ if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
 mkdir -p /tmp/tor
 chown tor /tmp/tor
-tor /usr/bin/tor -f /etc/tor/torrc &
+/usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
