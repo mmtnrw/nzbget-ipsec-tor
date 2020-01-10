@@ -21,14 +21,17 @@ echo "[info] Setting up User ID: ${PUID}"
 echo "[info] Setting up Group ID: ${PGID}"
 echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
 
-if [ ! -z $(getent passwd ${PGID}) ]
+if [ ! "$(getent passwd ${PGID})" ]
 then
-addgroup --gid "$GID" "mmtnrw"
+addgroup --gid "$PGID" "mmtnrw"
+GROUP="mmtnrw"
+else
+GROUP=$(getent group ${PGID}|cut -d: -f1)
 fi
 
-if [ ! -z $(getent passwd ${PUID}) ]
+if [ ! "$(getent passwd ${PUID})" ]
 then
-adduser --gecos "" --gid "$GID" -r --uid "$PUID" "mmtnrw"
+adduser --gecos "" --ingroup "mmtnrw" --system --uid "$PUID" "$GROUP"
 fi
 
 RUN="s6-applyuidgid -u ${PUID} -g ${PGID}"
@@ -67,7 +70,9 @@ ntpd -d -q -n -p time.cloudflare.com &> /dev/null
 
 if [[ "${TOR_ENABLED}" == "yes" ]]; then
 echo "[info] Starting Tor....."
-s6-setuidgid tor /usr/bin/tor -f /etc/tor/torrc &
+mkdir -p /tmp/tor
+chown tor /tmp/tor
+tor /usr/bin/tor -f /etc/tor/torrc &
 fi
 
 echo "[info] Starting Cronie....."
