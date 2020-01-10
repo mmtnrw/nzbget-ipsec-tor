@@ -8,7 +8,7 @@ ARG NZBGET_BRANCH="testing-download"
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo php-curl php-json&& \
+apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo php-curl php-json tzdata s6 && \
 echo "**** Installing NZBGet ****" && \
 mkdir -p /app/nzbget && \
 curl -o /tmp/json -L http://nzbget.net/info/nzbget-version-linux.json && NZBGET_VERSION=$(grep "${NZBGET_BRANCH}" /tmp/json  | cut -d '"' -f 4) && \
@@ -27,10 +27,6 @@ echo "**** Cleaning up ****" && \
 rm -rf /tmp/*
 
 RUN \
-echo "**** Enabling SQLite in PHP ****"
-#sed -i 's/\;extension=pdo_sqlite/extension=pdo_sqlite/;s/\;extension=sqlite3/extension=sqlite3/'  /etc/php7/php.ini
-  
-RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
 echo 'SocksPort 0.0.0.0:9050' >> /etc/tor/torrc
 
@@ -42,10 +38,6 @@ printf '%s' 'username' ' : EAP ' 'password' >> /etc/ipsec.secrets && \
 rmdir /etc/ipsec.d/cacerts && \
 ln -s /etc/ssl/certs /etc/ipsec.d/cacerts && \
 sed -i 's/load.*$/load = no/' /etc/strongswan.d/charon/resolve.conf
-
-RUN \
-echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
-echo '1 * * * * /scripts/cron.sh &> /dev/null' >> /var/spool/cron/crontabs/root
 
 # Copying local files
 COPY root/ /root/
