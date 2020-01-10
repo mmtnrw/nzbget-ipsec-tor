@@ -39,7 +39,15 @@ chown ${PUID}:${GUID} /config/nzbget.conf
 echo "[info] Setting up Timezone : $TZ"
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
 echo $TZ > /etc/timezone
-ntpd -d -q -n -p time.cloudflare.com
+
+if [[ ! -z "$NAMESERVER" ]]; then
+echo "[info] Setting Nameserver to ${NAMESERVER}....."
+echo "nameserver ${NAMESERVER}" >> /etc/resolv.conf
+else
+echo "[info] Setting Nameserver to Cloudflare and Google....."
+echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
+echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
+fi
 
 if [[ "${VPN_ENABLED}" == "yes" ]]; then
 echo "[info] Starting IPSec....."
@@ -52,16 +60,6 @@ sed -i "s/right=.*$/right=${VPN_SERVER}/" /etc/ipsec.conf
 echo "${VPN_USER} : EAP ${VPN_PASS}" > /etc/ipsec.secrets
 
 ipsec start
-fi
-
-
-if [[ ! -z "$NAMESERVER" ]]; then
-echo "[info] Setting Nameserver to ${NAMESERVER}....."
-echo "nameserver ${NAMESERVER}" >> /etc/resolv.conf
-else
-echo "[info] Setting Nameserver to Cloudflare and Google....."
-echo 'nameserver 1.1.1.1' >> /etc/resolv.conf
-echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
 fi
 
 echo "[info] Syncing Time...."
