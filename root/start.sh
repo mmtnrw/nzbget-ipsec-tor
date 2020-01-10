@@ -31,7 +31,7 @@ then
 adduser --gecos "" --gid "$GID" -r --uid "$PUID" "mmtnrw"
 fi
 
-RUN=s6-setuidgid -u ${PUID} -g ${PGID}
+RUN="s6-setuidgid -u ${PUID} -g ${PGID}"
 UMASK_SET=${UMASK_SET:-022}
 umask "$UMASK_SET"
 chown ${PUID}:${GUID} /config/nzbget.conf
