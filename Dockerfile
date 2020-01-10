@@ -30,7 +30,7 @@ RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
 echo 'SocksPort 0.0.0.0:9050' > /etc/tor/torrc && \
 echo 'User tor' >> /etc/tor/torrc && \
-echo 'DataDirectory /tmp/tor' >> /etc/torrc
+echo 'DataDirectory /tmp/tor' >> /etc/tor/torrc
 
 RUN \
 echo "**** Setting Strongswan ****" && \
