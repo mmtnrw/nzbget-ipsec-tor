@@ -57,9 +57,11 @@ echo "[info] Starting IPSec....."
 echo "[info] IPSec Username=$VPN_USER"
 echo "[info] IPSec Password=$VPN_PASS"
 echo "[info] IPSec Server=$VPN_SERVER"
+echo "[info] IPSec Type=$VPN_TYPE"
 
 sed -i "s/eap_identity=.*$/eap_identity=${VPN_USER}/" /etc/ipsec.conf
 if [[ "${VPN_TYPE}" == "NordVPN" ]]; then 
+echo "[info] Using NordVPN....."
 VPN_SERVER=`curl --silent 'https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations'|sed -n 's/.*"hostname":"\([^"]*\)"/\1/p'|cut -f1 -d",")`
 curl -s 'https://downloads.nordcdn.com/certificates/root.der' -o /etc/ipsec.d/cacerts/NordVPN.der
 openssl x509 -inform der -in /etc/ipsec.d/cacerts/NordVPN.der -out /etc/ipsec.d/cacerts/NordVPN.pem
