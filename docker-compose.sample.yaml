@@ -25,6 +25,7 @@ services:
       VPN_PASS: "mypassword"
       VPN_SERVER: "myserver"
       TOR_ENABLED: "yes"
+      VPN_TYPE: "default"
 #      NAME_SERVERS: "1.1.1.1"
       UMASK: "000"
       PUID: "0"
