@@ -65,6 +65,7 @@ echo "[info] Using NordVPN....."
 VPN_SERVER=`curl --silent 'https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations'|sed -n 's/.*"hostname":"\([^"]*\)"/\1/p'|cut -f1 -d",")`
 curl -s 'https://downloads.nordcdn.com/certificates/root.der' -o /etc/ipsec.d/cacerts/NordVPN.der
 openssl x509 -inform der -in /etc/ipsec.d/cacerts/NordVPN.der -out /etc/ipsec.d/cacerts/NordVPN.pem
+sed -i "s/rightca=.*$//" /etc/ipsec.conf
 echo 'rightca=/etc/ipsec.d/cacerts/NordVPN.pem' >> /etc/ipsec.conf
 fi
 sed -i "s/right=.*$/right=${VPN_SERVER}/" /etc/ipsec.conf
