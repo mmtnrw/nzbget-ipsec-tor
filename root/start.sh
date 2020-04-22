@@ -86,7 +86,7 @@ fi
 
 echo "[info] Starting Cronie....."
 echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
-echo '1 * * * * /scripts/cron.sh &> /dev/null' >> "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
+echo '1 * * * * /scripts/cron.sh &> /dev/null' > "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
 
 /usr/sbin/crond &
 
