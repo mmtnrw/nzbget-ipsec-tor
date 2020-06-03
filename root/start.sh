@@ -66,7 +66,8 @@ VPN_SERVER=`curl --silent 'https://nordvpn.com/wp-admin/admin-ajax.php?action=se
 curl -s 'https://downloads.nordcdn.com/certificates/root.der' -o /etc/ipsec.d/cacerts/NordVPN.der
 openssl x509 -inform der -in /etc/ipsec.d/cacerts/NordVPN.der -out /etc/ipsec.d/cacerts/NordVPN.pem
 sed -i -E "/rightca=.*$/d" /etc/ipsec.conf
-echo 'rightca=/etc/ipsec.d/cacerts/NordVPN.pem' >> /etc/ipsec.conf
+printf '%s\n\t' 'rightca=/etc/ipsec.d/cacerts/NordVPN.pem' >>  /etc/ipsec.conf
+#echo 'rightca=/etc/ipsec.d/cacerts/NordVPN.pem' >> /etc/ipsec.conf
 fi
 sed -i "s/right=.*$/right=${VPN_SERVER}/" /etc/ipsec.conf
 echo "${VPN_USER} : EAP ${VPN_PASS}" > /etc/ipsec.secrets
