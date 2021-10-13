@@ -8,7 +8,7 @@ ARG NZBGET_BRANCH="testing-download"
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo php-curl php-json openssl tzdata s6 php7-dom && \
+apk add --no-cache curl p7zip python3 unrar wget php tor sqlite php-sqlite3 strongswan php-pdo_sqlite nano sudo php-curl php-json openssl tzdata s6 php7-dom python3 py3-pip && \
 echo "**** Installing NZBGet ****" && \
 mkdir -p /app/nzbget && \
 curl -o /tmp/json -L http://nzbget.net/info/nzbget-version-linux.json && NZBGET_VERSION=$(grep "${NZBGET_BRANCH}" /tmp/json  | cut -d '"' -f 4) && \
@@ -25,6 +25,8 @@ sed -i \
 /defaults/nzbget.conf && \
 echo "**** Cleaning up ****" && \
 rm -rf /tmp/*
+
+RUN pip3 install requests requests[socks] jsonrpclib feedparser pathlib datetime
 
 RUN \
 echo "**** Setting Tor User and Enabling SocksProxy on Port 9050 ****" && \
@@ -45,7 +47,9 @@ sed -i 's/load.*$/load = no/' /etc/strongswan.d/charon/resolve.conf
 COPY root/ /root/
 
 RUN \
-chmod +x /root/start.sh
+chmod +x /root/start.sh && \
+chmod +x /root/vpn.sh && \
+chmod +x /root/update.sh
 
 # ports and volumes
 VOLUME /config /data /media /scripts

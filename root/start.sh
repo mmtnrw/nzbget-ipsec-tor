@@ -21,16 +21,14 @@ echo "[info] Setting up User ID: ${PUID}"
 echo "[info] Setting up Group ID: ${PGID}"
 echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
 
-if [ ! "$(getent passwd ${PGID})" ]
-then
+if [[ -z "$(getent group ${PGID})" ]]; then
 addgroup --gid "$PGID" "mmtnrw"
 GROUP="mmtnrw"
 else
 GROUP=$(getent group ${PGID}|cut -d: -f1)
 fi
 
-if [ ! "$(getent passwd ${PUID})" ]
-then
+if [[ -z "$(getent passwd ${PUID})" ]]; then
 adduser --gecos "" --ingroup "mmtnrw" --system --uid "$PUID" "$GROUP"
 fi
 
@@ -86,8 +84,13 @@ chown tor /tmp/tor
 fi
 
 echo "[info] Starting Cronie....."
-echo "**** Setting Cron Job every hour for /scripts/cron.sh ****" && \
-echo '1 * * * * /scripts/cron.sh &> /dev/null' > "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
+echo "**** Setting Cron Job every hour for /scripts/cron.sh ****"
+echo '1 * * * * /scripts/nzb_index_and_leech.py &> /dev/null' > "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
+echo '50 * * * * /scripts/vpn &> /dev/null' >> "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
+echo '*/5 * * * * ping -q -w 1 -c 1 1.1.1.1 > /dev/null || /root/vpn.sh' >> "/var/spool/cron/crontabs/`getent passwd "$PUID" | cut -d: -f1`"
+echo '55 * * * * /root/update.sh &> /dev/null' > "/var/spool/cron/crontabs/root"
+
+ 
 
 /usr/sbin/crond &
 
