@@ -16,7 +16,7 @@ else
 	sed -i 's/MainDir=~\/downloads/MainDir=\/data/g' /config/nzbget.conf
 
 fi
-
+export TERM=xterm
 echo "[info] Setting up User ID: ${PUID}"
 echo "[info] Setting up Group ID: ${PGID}"
 echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
@@ -29,8 +29,10 @@ GROUP=$(getent group ${PGID}|cut -d: -f1)
 fi
 
 if [[ -z "$(getent passwd ${PUID})" ]]; then
-adduser --gecos "" --ingroup "mmtnrw" --system --uid "$PUID" "$GROUP"
+adduser --gecos "" --ingroup "$GROUP" --system --uid "$PUID" "$GROUP"
 fi
+
+export
 
 RUN="s6-applyuidgid -u ${PUID} -g ${PGID}"
 UMASK_SET=${UMASK_SET:-022}
