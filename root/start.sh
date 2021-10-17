@@ -39,7 +39,6 @@ echo "[info] **** Fixing Permission ***"
 chown ${PUID}:${GUID} /config -R
 chown ${PUID}:${GUID} /data -R
 chown ${PUID}:${GUID} /scripts -R
-chown ${PUID}:${GUID} /media -R
 
 echo "[info] Setting up Timezone : $TZ"
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
