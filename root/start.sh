@@ -19,7 +19,6 @@ fi
 export TERM=xterm
 echo "[info] Setting up User ID: ${PUID}"
 echo "[info] Setting up Group ID: ${PGID}"
-echo "[info] **** Warning: Don't forget to chown Files to the User... ***"
 
 if [[ -z "$(getent group ${PGID})" ]]; then
 addgroup --gid "$PGID" "mmtnrw"
@@ -35,6 +34,8 @@ fi
 RUN="s6-applyuidgid -u ${PUID} -g ${PGID}"
 UMASK_SET=${UMASK_SET:-022}
 umask "$UMASK_SET"
+
+echo "[info] **** Fixing Permission ***"
 chown ${PUID}:${GUID} /config -R
 chown ${PUID}:${GUID} /data -R
 chown ${PUID}:${GUID} /scripts -R
